@@ -1,0 +1,271 @@
+/* ─────────────────────────────────────────────
+   GOOGLE FONTS (Nature feel)
+───────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400&display=swap');
+
+/* ─────────────────────────────────────────────
+   TAILWIND v4
+───────────────────────────────────────────── */
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────
+   DESIGN TOKENS (Nature Theme)
+───────────────────────────────────────────── */
+:root {
+
+  /* Backgrounds */
+  --bg: #fafaf7;
+  --bg-2: #f3f5ef;
+  --bg-3: #e9efe4;
+
+  --surface: #ffffff;
+
+  /* Text */
+  --text: #2f3a2f;
+  --text-strong: #1c2b1c;
+  --text-soft: #4b5a4b;
+  --text-muted: #7c8b7c;
+
+  /* Borders */
+  --border: #e4e8df;
+  --border-strong: #cfd6c8;
+
+  /* Primary (Leaf Green) */
+  --primary: #3a7d44;
+  --primary-hover: #2f6637;
+  --primary-soft: #3a7d4415;
+
+  /* Accent (Earth Brown) */
+  --accent: #8b5e3c;
+
+  /* Extra palette */
+  --success: #4caf50;
+  --danger: #e74c3c;
+
+  /* Shadows (soft natural shadows) */
+  --shadow-sm: 0 4px 12px rgba(0,0,0,0.04);
+  --shadow-md: 0 12px 30px rgba(0,0,0,0.08);
+
+  /* semantic */
+  --leaf: var(--primary);
+  --leaf-soft: var(--primary-soft);
+}
+
+/* ─────────────────────────────────────────────
+   DARK MODE
+───────────────────────────────────────────── */
+
+body.dark {
+
+  --bg: #0f1510;
+  --bg-2: #141a14;
+  --bg-3: #1a211a;
+
+  --surface: #151c15;
+
+  --text: #d9e4d9;
+  --text-soft: #9fb29f;
+  --text-muted: #7a8a7a;
+
+  --border: #283228;
+}
+
+/* ─────────────────────────────────────────────
+   BASE STYLES
+───────────────────────────────────────────── */
+
+@layer base {
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1,h2,h3,h4 {
+    font-family: 'Playfair Display', serif;
+    color: var(--text-strong);
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* Scrollbar */
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 10px;
+  }
+
+  /* Inputs */
+
+  input,
+  select,
+  textarea {
+
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-soft);
+  }
+
+}
+
+/* ─────────────────────────────────────────────
+   UTILITIES
+───────────────────────────────────────────── */
+
+@layer utilities {
+
+  .serif {
+    font-family: 'Playfair Display', serif;
+  }
+
+  .mono {
+    font-family: 'DM Mono', monospace;
+  }
+
+  .bg-nature {
+    background: var(--bg);
+  }
+
+  .bg-nature-2 {
+    background: var(--bg-2);
+  }
+
+  .bg-nature-3 {
+    background: var(--bg-3);
+  }
+
+  .text-leaf {
+    color: var(--leaf);
+  }
+
+  .border-soft {
+    border-color: var(--border);
+  }
+
+}
+
+/* ─────────────────────────────────────────────
+   COMPONENTS
+───────────────────────────────────────────── */
+
+@layer components {
+
+  .container-main {
+
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+
+  }
+
+  .card {
+
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+  }
+
+  .card-hover {
+
+    box-shadow: var(--shadow-sm);
+    transition: all 0.25s ease;
+
+  }
+
+  .card-hover:hover {
+
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+
+  }
+
+  .btn-primary {
+
+    background: var(--primary);
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all .2s ease;
+
+  }
+
+  .btn-primary:hover {
+
+    background: var(--primary-hover);
+
+  }
+
+  .btn-outline {
+
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+
+  }
+
+}
+
+/* ─────────────────────────────────────────────
+   ANIMATIONS
+───────────────────────────────────────────── */
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  min-width: max-content;
+
+  animation: marquee 26s linear infinite;
+
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

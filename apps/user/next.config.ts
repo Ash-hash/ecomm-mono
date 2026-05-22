@@ -1,0 +1,69 @@
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  /* config options here */
+  transpilePackages: ['@repo/auth', '@repo/api-client', '@repo/types'],
+  reactCompiler: true,
+  images: {
+    // domains: [
+    //   'picsum.photos',
+    //   'm.media-amazon.com',
+    //   'i.ebayimg.com',
+    //   'sub2.lovemeall.com',
+    //   'picsum.photos'
+    // ],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'm.media-amazon.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'i.ebayimg.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'sub2.lovemeall.com',
+        port: '',
+        pathname: '/**',
+      },
+       {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+        pathname: '/uploads/**',
+      },
+        {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname :  'images.unsplash.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol : 'https',
+        hostname : 'i.pravatar.cc',
+        port : '',
+        pathname : '/**'
+      }
+    ],
+    dangerouslyAllowLocalIP: true,
+  },
+};
+
+export default nextConfig;
