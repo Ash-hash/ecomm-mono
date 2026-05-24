@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   transpilePackages: ['@repo/api-client', '@repo/types'],
-  reactCompiler: true,
+
   images: {
     remotePatterns: [
       {
@@ -29,13 +29,13 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
-       {
+      {
         protocol: 'http',
         hostname: 'localhost',
         port: '3001',
         pathname: '/uploads/**',
       },
-        {
+      {
         protocol: 'http',
         hostname: 'localhost',
         port: '3000',
@@ -43,12 +43,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname :  'images.unsplash.com',
+        hostname: 'images.unsplash.com',
         port: '',
         pathname: '/**',
-      }
+      },
     ],
-    dangerouslyAllowLocalIP: true,
   },
 };
 
