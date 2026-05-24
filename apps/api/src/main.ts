@@ -124,10 +124,12 @@ async function bootstrap() {
   }
 
 const port = config.get<number>('PORT', 3000);
-await app.listen(port);
+app.set('trust proxy', 1);
 
-  logger.log(`API running at http://localhost:${port}/api`);
-  logger.log(`Environment: ${config.get('NODE_ENV', 'development')}`);
+await app.listen(port, '0.0.0.0');
+await app.listen(port);
+logger.log(`API started on port ${port}`);
+logger.log(`Environment: ${config.get('NODE_ENV', 'development')}`);
 }
 
 bootstrap();
