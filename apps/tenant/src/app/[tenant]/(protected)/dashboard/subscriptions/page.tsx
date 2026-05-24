@@ -180,7 +180,7 @@ function PlanBreakdown({
 // Expiring soon panel (collapsible)
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function daysUntil(date: string | Date) {
+function daysUntil(date: string | Date) {
   const diff = new Date(date).getTime() - new Date().getTime();
   return Math.max(0, Math.ceil(diff / (1000 * 60 * 60 * 24)));
 }
