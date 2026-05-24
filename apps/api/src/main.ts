@@ -127,7 +127,6 @@ const port = config.get<number>('PORT', 3000);
 app.set('trust proxy', 1);
 
 await app.listen(port, '0.0.0.0');
-await app.listen(port);
 logger.log(`API started on port ${port}`);
 logger.log(`Environment: ${config.get('NODE_ENV', 'development')}`);
 }
