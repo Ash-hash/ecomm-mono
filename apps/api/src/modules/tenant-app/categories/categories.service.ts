@@ -123,7 +123,7 @@ export class CategoriesService {
     if (exists) {
       throw new ConflictException(`Slug "${dto.slug}" is already taken`);
     }
-    const cats = await Category.find().lean();
+    const cats = (await Category.find().lean()) as any[];
     buildPathMap(cats);
 
     const parent = dto.parentId
@@ -168,7 +168,7 @@ export class CategoriesService {
     Object.assign(cat, dto);
 
     // 🔥 recompute path
-    const cats = await Category.find().lean();
+    const cats = (await Category.find().lean()) as any[];
     buildPathMap(cats);
 
     const current = cats.find((c) => c._id.toString() === id);

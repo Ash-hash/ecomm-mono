@@ -21,7 +21,7 @@ export class OrdersService {
     const Cart = getModel(req, 'Cart', CartSchema);
     const Offer = getModel(req, 'Offer', OfferSchema);
     // 1. Get cart
-    const cart = await Cart.findOne({ user: userId }).lean();
+    const cart = (await Cart.findOne({ user: userId }).lean()) as any;
     if (!cart || !cart.items.length) {
       throw new BadRequestException('Cart is empty');
     }

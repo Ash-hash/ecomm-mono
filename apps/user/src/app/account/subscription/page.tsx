@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react-hooks/purity */
 // app/account/subscription/page.tsx
 'use client';
 

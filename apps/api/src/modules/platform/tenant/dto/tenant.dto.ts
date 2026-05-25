@@ -36,6 +36,15 @@ export class RegisterTenantDto {
   @IsOptional()
   @IsIn(['monthly', 'annual', 'onetime'])
   billingCycle?: BillingCycle;
+
+  @IsOptional() @IsString()
+  customDomain?: string;
+
+  @IsOptional() @IsString()
+  logoUrl?: string;
+
+  @IsOptional()
+  razorpay?: ConnectRazorpayDto;
 }
 
 // ── Connect Razorpay credentials ──────────────────────────────────────────────

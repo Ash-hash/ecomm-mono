@@ -218,7 +218,7 @@ export class SubscriptionsService {
 
   async compareForCustomer(req: any, userId: string) {
     const User = getModel(req, 'User', UserSchema);
-    const user = await User.findById(userId).lean();
+    const user = (await User.findById(userId).lean()) as any;
     if (!user) throw new NotFoundException('User not found');
     const currentPlan = (user.plan ?? 'free') as UserPlan;
     const currentIndex = PLAN_ORDER.indexOf(currentPlan);

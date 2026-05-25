@@ -82,7 +82,7 @@ export class TenantController {
   // ── Current tenant (authenticated) ─────────────────────────────────────────
 
   @Get('me')
-  getMe(@RequestContext() user: any) {
+  getMe(@RequestContext() user: any): Promise<any> {
     return this.tenantService.findOne(user.tenantId);
   }
 
@@ -130,7 +130,7 @@ export class TenantController {
   @Get(':id')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('super_admin')
-  findOne(@Param('id', ParseObjectIdPipe) id: string) {
+  findOne(@Param('id', ParseObjectIdPipe) id: string): Promise<any> {
     return this.tenantService.findOne(id);
   }
 

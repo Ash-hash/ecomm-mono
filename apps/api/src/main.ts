@@ -10,6 +10,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { SuperAdminAuthService } from './modules/platform/super-admin/super-admin-auth.service';
+import { TenantService } from './modules/platform/tenant/tenant.service';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -125,6 +126,12 @@ app.enableCors({
     } catch (e) {
       logger.error('Super admin seed failed', e instanceof Error ? e.stack : String(e));
     }
+  }
+
+  try {
+    await app.get(TenantService).seedDemoTenants();
+  } catch (e) {
+    logger.error('Demo tenant seed failed', e instanceof Error ? e.stack : String(e));
   }
 
 const port = config.get<number>('PORT', 3000);

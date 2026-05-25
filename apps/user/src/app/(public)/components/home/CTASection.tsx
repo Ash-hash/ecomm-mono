@@ -325,7 +325,6 @@ export default function CTASection() {
 
   // Hydrate auth state client-side only to avoid SSR mismatch
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setAuthed(isAuthed());
     setMounted(true);
   }, []);

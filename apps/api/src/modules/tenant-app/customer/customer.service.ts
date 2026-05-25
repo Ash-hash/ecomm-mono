@@ -252,7 +252,7 @@ export class CustomerService {
 
     const enriched = await Promise.all(
       items.map(async (item) => {
-        const p = await Product.findById(item.productId).lean();
+        const p = (await Product.findById(item.productId).lean()) as any;
         const livePrice = p?.price ?? item.priceSnapshot;
         return {
           ...item,
@@ -473,7 +473,7 @@ export class CustomerService {
 
   async getAddresses(req: any, userId: string) {
     const User = getModel(req, 'User', UserSchema);
-    const user = await User.findById(userId).lean();
+    const user = (await User.findById(userId).lean()) as any;
     if (!user) throw new NotFoundException('User not found');
     return { data: user.addresses ?? [] };
   }

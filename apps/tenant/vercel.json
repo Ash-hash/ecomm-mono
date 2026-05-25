@@ -1,0 +1,6 @@
+{
+  "buildCommand": "cd ../.. && npm run build:tenant",
+  "installCommand": "cd ../.. && npm ci",
+  "framework": "nextjs",
+  "outputDirectory": ".next"
+}

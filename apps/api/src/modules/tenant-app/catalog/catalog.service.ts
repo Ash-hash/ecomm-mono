@@ -22,10 +22,10 @@ export class CatalogService {
     }
     if (query.categoryId) filter.categoryId = query.categoryId;
     if (query.category) {
-      const category = await Category.findOne({
+      const category = (await Category.findOne({
         slug: query.category,
         isActive: { $ne: false },
-      }).lean();
+      }).lean()) as any;
       if (!category) {
         return {
           success: true,
@@ -38,12 +38,12 @@ export class CatalogService {
           },
         };
       }
-      const children = await Category.find({
+      const children = (await Category.find({
         parentId: category._id,
         isActive: { $ne: false },
       })
         .select('_id')
-        .lean();
+        .lean()) as any[];
       filter.categoryId = {
         $in: [category._id, ...children.map((child: any) => child._id)],
       };
