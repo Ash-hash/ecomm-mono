@@ -2,10 +2,20 @@
 import {
   IsString, IsEmail, IsIn, IsOptional, IsBoolean,
   IsNumber, Min, MinLength, Matches, IsPhoneNumber,
+  ValidateNested,
 } from 'class-validator';
 import { Type } from 'class-transformer';
-import { PartialType } from '@nestjs/mapped-types';
 import { BillingCycle, TenantPlan } from '../tenant.schema';
+
+// ── Connect Razorpay credentials ──────────────────────────────────────────────
+export class ConnectRazorpayDto {
+  @IsString()
+  @Matches(/^rzp_(live|test)_[A-Za-z0-9]+$/, { message: 'Invalid Razorpay Key ID format' })
+  keyId: string;
+
+  @IsString() @MinLength(20)
+  keySecret: string;
+}
 
 // ── Self-registration (public) ────────────────────────────────────────────────
 export class RegisterTenantDto {
@@ -44,18 +54,12 @@ export class RegisterTenantDto {
   logoUrl?: string;
 
   @IsOptional()
+  @ValidateNested()
+  @Type(() => ConnectRazorpayDto)
   razorpay?: ConnectRazorpayDto;
 }
 
-// ── Connect Razorpay credentials ──────────────────────────────────────────────
-export class ConnectRazorpayDto {
-  @IsString()
-  @Matches(/^rzp_(live|test)_[A-Za-z0-9]+$/, { message: 'Invalid Razorpay Key ID format' })
-  keyId: string;
 
-  @IsString() @MinLength(20)
-  keySecret: string;
-}
 
 // ── Tenant update (admin-only fields) ────────────────────────────────────────
 export class UpdateTenantDto {
