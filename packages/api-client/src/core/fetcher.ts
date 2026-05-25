@@ -79,6 +79,21 @@ function getTenantSlug(explicit?: string): string | null {
     return slug;
   }
 
+  const hostParts = host.split('.');
+  const firstLabel = hostParts[0];
+  const productionAppHosts = [
+    'ecomm-mono-user.vercel.app',
+    'ecomm-mono-tenant.vercel.app',
+  ];
+  const isTenantSubdomain = productionAppHosts.some((appHost) =>
+    host.endsWith(`.${appHost}`),
+  );
+
+  if (isTenantSubdomain && firstLabel && !reserved.has(firstLabel)) {
+    window.localStorage.setItem('tenant_slug', firstLabel);
+    return firstLabel;
+  }
+
   const storedTenant = window.localStorage.getItem('tenant_slug');
   if (storedTenant) return storedTenant;
 

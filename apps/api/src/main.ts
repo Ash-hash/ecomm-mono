@@ -42,7 +42,7 @@ const allowedOrigins = [
 ];
 
 const dynamicVercelRegex =
-  /^https:\/\/ecomm-mono-(admin|tenant|user)(-.*)?\.vercel\.app$/;
+  /^https:\/\/([a-z0-9-]+\.)?ecomm-mono-(admin|tenant|user)(-.*)?\.vercel\.app$/;
 
 
 app.enableCors({
