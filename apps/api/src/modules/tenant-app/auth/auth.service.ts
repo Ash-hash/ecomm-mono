@@ -357,13 +357,8 @@ export class AuthService {
   const base = {
     httpOnly: true,
     secure: isProd,
-    sameSite: 'lax' as const,
-    path: '/',
-    ...(isProd
-      ? {
-          domain: '.yourdomain.com',
-        }
-      : {}),
+    sameSite: 'none' as const,
+    path: '/'
   };
 
   const accessName = isSuperAdmin

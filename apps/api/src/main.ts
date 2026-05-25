@@ -11,13 +11,6 @@ import { join } from 'path';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { SuperAdminAuthService } from './modules/platform/super-admin/super-admin-auth.service';
 
-function csv(value?: string): string[] {
-  return (value ?? '')
-    .split(',')
-    .map((item) => item.trim())
-    .filter(Boolean);
-}
-
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     bufferLogs: true,
@@ -36,41 +29,52 @@ async function bootstrap() {
 
   app.use(cookieParser());
 
-  const allowedOrigins = csv(config.get<string>('CORS_ORIGINS'));
-  if (allowedOrigins.length === 0) {
-    allowedOrigins.push(...csv(config.get<string>('ADMIN_ORIGIN')));
-  }
-  const devOrigins = [
-    'http://localhost:3000',
-    'http://localhost:3001',
-    'http://localhost:3002',
-    'http://localhost:3003',
-  ];
-  const corsOrigins =
-    allowedOrigins.length > 0
-      ? [...new Set([...allowedOrigins, ...devOrigins])]
-      : devOrigins;
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'http://localhost:3002',
+  'http://localhost:3003',
 
-  app.enableCors({
-    origin: (origin, callback) => {
-      const isLocalTenantOrigin =
-        config.get('NODE_ENV') !== 'production' &&
-        /^https?:\/\/[a-z0-9-]+\.localhost:\d+$/i.test(origin ?? '');
-      const isLocalDevOrigin =
-        config.get('NODE_ENV') !== 'production' &&
-        /^https?:\/\/(localhost|127\.0\.0\.1|\[::1\]):\d+$/i.test(origin ?? '');
+  'https://ecomm-mono-admin.vercel.app',
+  'https://ecomm-mono-user.vercel.app',
+  'https://ecomm-mono-tenant.vercel.app',
+];
 
-      if (!origin || corsOrigins.includes(origin) || isLocalTenantOrigin || isLocalDevOrigin) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'), false);
-      }
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'x-tenant-slug', 'x-cart-id'],
-    exposedHeaders: ['x-cart-id'],
-  });
+const dynamicVercelRegex =
+  /^https:\/\/ecomm-mono-(admin|tenant|user)(-.*)?\.vercel\.app$/;
+
+
+app.enableCors({
+  origin: (origin, callback) => {
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    const isAllowed =
+  allowedOrigins.includes(origin) ||
+  dynamicVercelRegex.test(origin);
+
+    if (isAllowed) {
+      callback(null, true);
+    } else {
+      logger.warn(`Blocked by CORS: ${origin}`);
+      callback(new Error(`CORS blocked for origin: ${origin}`), false);
+    }
+  },
+
+  credentials: true,
+
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+
+  allowedHeaders: [
+    'Content-Type',
+    'Authorization',
+    'x-tenant-slug',
+    'x-cart-id',
+  ],
+
+  exposedHeaders: ['x-cart-id'],
+});
 
   app.setGlobalPrefix('api');
 

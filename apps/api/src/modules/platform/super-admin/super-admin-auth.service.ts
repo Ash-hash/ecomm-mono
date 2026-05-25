@@ -180,7 +180,7 @@ export class SuperAdminAuthService {
     const opts = {
       httpOnly: true,
       secure: isProd,
-      sameSite: 'lax' as const,
+      sameSite: 'none' as const,
       path: '/',
     };
     // Use separate cookie names for super-admin to avoid conflicts with tenant cookies
