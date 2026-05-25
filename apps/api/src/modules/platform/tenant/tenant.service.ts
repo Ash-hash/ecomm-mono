@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 // ─── tenant/tenant.service.ts ─────────────────────────────────────────────────
 import {
   Injectable,
@@ -63,6 +64,42 @@ export class TenantService {
             key_secret: secret,
           })
         : null;
+  }
+
+
+   // ═══════════════════════════════════════════════════════════════════════════
+  // Razorpay Integration for Tenant
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  async connectRazorpay(tenantId: string, dto: ConnectRazorpayDto) {
+    const tenant = await this.tenantModel.findById(tenantId);
+    if (!tenant) throw new NotFoundException('Tenant not found');
+
+    // Test the credentials with a minimal API call
+    try {
+      const rzp = new Razorpay({
+        key_id: dto.keyId,
+        key_secret: dto.keySecret,
+      });
+      await rzp.orders.all({ count: 1 }); // lightweight call to verify creds
+    } catch {
+      throw new BadRequestException(
+        'Invalid Razorpay credentials — please check your Key ID and Secret',
+      );
+    }
+
+    tenant.razorpay = {
+      keyId: dto.keyId,
+      keySecret: dto.keySecret,
+      isVerified: true,
+      verifiedAt: new Date(),
+    };
+    await tenant.save();
+
+    return {
+      message: 'Razorpay connected and verified!',
+      data: { isVerified: true, keyId: dto.keyId },
+    };
   }
 
   // ═══════════════════════════════════════════════════════════════════════════
@@ -392,40 +429,7 @@ export class TenantService {
     };
   }
 
-  // ═══════════════════════════════════════════════════════════════════════════
-  // Razorpay Integration for Tenant
-  // ═══════════════════════════════════════════════════════════════════════════
-
-  async connectRazorpay(tenantId: string, dto: ConnectRazorpayDto) {
-    const tenant = await this.tenantModel.findById(tenantId);
-    if (!tenant) throw new NotFoundException('Tenant not found');
-
-    // Test the credentials with a minimal API call
-    try {
-      const rzp = new Razorpay({
-        key_id: dto.keyId,
-        key_secret: dto.keySecret,
-      });
-      await rzp.orders.all({ count: 1 }); // lightweight call to verify creds
-    } catch {
-      throw new BadRequestException(
-        'Invalid Razorpay credentials — please check your Key ID and Secret',
-      );
-    }
-
-    tenant.razorpay = {
-      keyId: dto.keyId,
-      keySecret: dto.keySecret,
-      isVerified: true,
-      verifiedAt: new Date(),
-    };
-    await tenant.save();
-
-    return {
-      message: 'Razorpay connected and verified!',
-      data: { isVerified: true, keyId: dto.keyId },
-    };
-  }
+ 
 
   async seedDemoTenants(): Promise<void> {
     if (this.config.get<string>('SEED_DEMO_TENANTS', 'true') === 'false') {
